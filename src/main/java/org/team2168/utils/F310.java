@@ -1,4 +1,4 @@
-package utils;
+package org.team2168.utils;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
