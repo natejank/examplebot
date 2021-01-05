@@ -9,9 +9,14 @@ package org.team2168;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+
+import org.team2168.commands.DriveWithJoysticks;
 import org.team2168.commands.ExampleCommand;
 import org.team2168.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import org.team2168.subsystems.Drivetrain;
+import org.team2168.Constants;
+import utils.F310;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -24,14 +29,25 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  // Singleton
+  public static RobotContainer instance = null;
 
+  // subsystems
+  private final Drivetrain dt;
+
+  // controllers
+  private F310 driverJoystick;
 
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
-  public RobotContainer() {
+  private RobotContainer() {
     // Configure the button bindings
+    dt = Drivetrain.getInstance();
+    dt.setDefaultCommand(new DriveWithJoysticks());
+
+    driverJoystick = new F310(Constants.DRIVER_JOYSTICK);
     configureButtonBindings();
   }
 
@@ -42,6 +58,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // driverJoystick.ButtonA().whenPressed(new DriveWithConstant);
   }
 
 
@@ -53,5 +70,20 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
+  }
+
+  public double getGunStyleYValue() {
+    return driverJoystick.getLeftStickRaw_Y();
+  }
+
+  public double getGunStyleXValue() {
+    return driverJoystick.getLeftStickRaw_X();
+  }
+
+
+  public static RobotContainer getInstance() {
+    if (instance == null)
+      instance = new RobotContainer();
+    return instance;
   }
 }

@@ -16,4 +16,12 @@ package org.team2168;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    /*      Joystick Constants      */
+    public static final int DRIVER_JOYSTICK = 0;
+
+    /*      Drivetrain Constants    */
+    public static final int DT_MOTOR_LEFT_1 = 0;
+    public static final int DT_MOTOR_LEFT_2 = 1;
+    public static final int DT_MOTOR_RIGHT_1 = 2;
+    public static final int DT_MOTOR_RIGHT_2 = 3;
 }
