@@ -1,7 +1,7 @@
 package org.team2168.utils;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * Class to encapsulate all F310 functionality. No need to have multiple copies

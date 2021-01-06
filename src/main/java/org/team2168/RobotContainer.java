@@ -7,16 +7,16 @@
 
 package org.team2168;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
-
+import org.team2168.commands.DriveWithConstant;
 import org.team2168.commands.DriveWithJoysticks;
 import org.team2168.commands.ExampleCommand;
-import org.team2168.subsystems.ExampleSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
 import org.team2168.subsystems.Drivetrain;
-import org.team2168.Constants;
-import utils.F310;
+import org.team2168.subsystems.ExampleSubsystem;
+import org.team2168.utils.F310;
+
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -48,6 +48,7 @@ public class RobotContainer {
     dt.setDefaultCommand(new DriveWithJoysticks());
 
     driverJoystick = new F310(Constants.DRIVER_JOYSTICK);
+
     configureButtonBindings();
   }
 
@@ -58,9 +59,24 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // driverJoystick.ButtonA().whenPressed(new DriveWithConstant);
+    driverJoystick.ButtonA().whenHeld(new DriveWithConstant(0.15));
   }
 
+  public double getLeftStickRaw_Y() {
+    return driverJoystick.getLeftStickRaw_Y();
+  }
+
+  public double getRightStickRaw_Y() {
+    return driverJoystick.getRightStickRaw_Y();
+  }
+
+  public double getGunStyleYValue() {
+    return driverJoystick.getLeftStickRaw_Y();
+  }
+
+  public double getGunStyleXValue() {
+    return driverJoystick.getLeftStickRaw_X();
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -70,14 +86,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
-  }
-
-  public double getGunStyleYValue() {
-    return driverJoystick.getLeftStickRaw_Y();
-  }
-
-  public double getGunStyleXValue() {
-    return driverJoystick.getLeftStickRaw_X();
   }
 
 

@@ -7,23 +7,27 @@
 
 package org.team2168.commands;
 
+import org.team2168.Robot;
 import org.team2168.RobotContainer;
 import org.team2168.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class DriveWithJoysticks extends CommandBase {
+public class DriveWithConstant extends CommandBase {
   /**
-   * Creates a new DriveWithJoystick.
+   * Creates a new DriveWithConstant.
    */
+  Drivetrain dt;
+  RobotContainer rc;
 
-   Drivetrain dt;
-   RobotContainer rc;
+  private double _speed;
 
-  public DriveWithJoysticks() {
+
+  public DriveWithConstant(double inputSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     dt = Drivetrain.getInstance();
-
+    _speed = inputSpeed;
+    
     addRequirements(dt);
   }
 
@@ -36,14 +40,12 @@ public class DriveWithJoysticks extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    dt.tankDrive(rc.getGunStyleXValue(), rc.getGunStyleYValue());
-    // dt.tankDrive(rc.getLeftStickRaw_Y(), rc.getRightStickRaw_Y());
+    dt.tankDrive(_speed, _speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    dt.tankDrive(0.0, 0.0);
   }
 
   // Returns true when the command should end.
