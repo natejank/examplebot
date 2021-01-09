@@ -10,7 +10,12 @@ package org.team2168;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import org.team2168.commands.ExampleCommand;
+import org.team2168.subsystems.Drivetrain;
 import org.team2168.subsystems.ExampleSubsystem;
+import org.team2168.utils.F310;
+import org.team2168.commands.DriveWithConstant;
+import org.team2168.commands.DriveWithJoysticks;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -25,14 +30,28 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  public static RobotContainer instance = null;
+
+  private Drivetrain dt;
+  private ExampleSubsystem ex;
+
+  private F310 driverJoystick;
+
 
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
-  public RobotContainer() {
+  private RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    driverJoystick = new F310(Constants.DRIVER_JOYSTICK_PORT);
+
+    dt = Drivetrain.getInstance();
+    dt.setDefaultCommand(new DriveWithJoysticks(Drivetrain.getInstance()));
+
+    ex = new ExampleSubsystem();
   }
 
   /**
@@ -42,8 +61,25 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // driverJoystick.ButtonA().whenHeld(new DriveWithConstant(0.1));
+    driverJoystick.ButtonA().whenHeld(new ExampleCommand(ex));
   }
 
+  public double getLeftStick_Y() {
+    return driverJoystick.getLeftStickRaw_Y();
+  }
+
+  public double getRightStick_Y() {
+    return driverJoystick.getRightStickRaw_Y();
+  }
+
+  public double getLeftGunStyle() {
+    return driverJoystick.getLeftStickRaw_X();
+  }
+  
+  public double getRightGunStyle() {
+    return driverJoystick.getLeftStickRaw_Y();
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -53,5 +89,11 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
+  }
+
+  public static RobotContainer getInstance() {
+    if (instance == null)
+      instance = new RobotContainer();
+    return instance;
   }
 }
